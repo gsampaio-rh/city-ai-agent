@@ -1,0 +1,12 @@
+streamlit
+streamlit_folium
+ultralytics
+torch
+Pillow
+opencv-python
+transformers
+ollama
+whitebox
+folium
+shapely
+geopy
