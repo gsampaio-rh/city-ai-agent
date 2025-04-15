@@ -45,7 +45,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-st.markdown("# 🚧 Agente de Triagem de Buracos")
+st.markdown("# 🚧 City Agent")
 
 
 def display_tag(label, value, icon):

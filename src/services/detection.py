@@ -3,6 +3,7 @@ import tempfile
 import numpy as np
 from ultralytics import YOLO
 import config
+import os
 
 
 def load_model():
@@ -10,7 +11,10 @@ def load_model():
     Loads the YOLO detection model.
     """
     try:
-        model = YOLO(config.YOLO_MODEL_PATH)
+        abs_path = os.path.abspath(config.YOLO_MODEL_PATH)
+        print(f"📦 Loading YOLO model from: {abs_path}")
+        assert os.path.isfile(abs_path), "Model file does not exist at resolved path"
+        model = YOLO(config.YOLO_MODEL_PATH).to(config.DEVICE)
         return model
     except Exception as e:
         raise RuntimeError("Failed to load YOLO detection model") from e

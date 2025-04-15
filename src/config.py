@@ -1,8 +1,7 @@
-# config.py
-"""
-Configuration and secret settings for the pothole triage app.
-All hard-coded URLs, model paths, thresholds, radii, and colors are defined here.
-"""
+import os
+import torch
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # === API URLs & Parameters ===
 NOMINATIM_SEARCH_URL = "https://nominatim.openstreetmap.org/search"
@@ -13,7 +12,8 @@ NOMINATIM_SEARCH_LIMIT = 1
 OVERPASS_API_URL = "https://overpass-api.de/api/interpreter"
 
 # === Model Configuration ===
-YOLO_MODEL_PATH = "../models/Baseline_YOLOv8Small_Filtered.pt"
+YOLO_MODEL_PATH = os.path.join(BASE_DIR, "../models/Baseline_YOLOv8Small_Filtered.pt")
+
 BLIP_MODEL_NAME = "Salesforce/blip-image-captioning-base"
 LLAMA_MODEL_DEFAULT = "llama3.2:3b"
 LLAMA_VISION_MODEL = "llama3.2-vision"
@@ -45,3 +45,12 @@ FACILITY_MARKER_ICON = "plus-sign"
 
 RADIUS_CIRCLE_COLOR = "blue"
 RADIUS_CIRCLE_FILL_OPACITY = 0.08
+
+# === GPU Configuration ===
+USE_GPU = True
+
+DEVICE = (
+    "cuda"
+    if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available() else "cpu"
+)
