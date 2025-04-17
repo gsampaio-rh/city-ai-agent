@@ -37,8 +37,8 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
     └── services
         ├── captioning.py                   # (Optional) Image captioning using BLIP
         ├── detection.py                    # YOLO‑based pothole detection logic
-        ├── geo.py                          # Geocoding & Overpass API integrations
-        └── llm.py                          # LLaMA integration for AI insight & summary generation
+        ├── geo.py                       # Geocoding & Overpass API integrations
+        └── llm.py                       # LLaMA integration for AI insight & summary generation
 ```
 
 ---
@@ -54,8 +54,17 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
 
 - **APIs:**  
   - [Nominatim](https://nominatim.openstreetmap.org/) for forward and reverse geocoding.
-  - Overpass API for querying nearby amenities and infrastructure.
+  - [Overpass API](https://overpass-api.de/) for querying nearby amenities and infrastructure.
 - **Purpose:** Enriches image data with precise location details and contextual urban information.
+- **Underlying Source:** All geospatial data is provided via the OpenStreetMap ecosystem.
+
+#### How It's Used
+
+- **Nominatim API**:  
+  Converts addresses into latitude/longitude and vice-versa to tag road damage with relevant administrative and street-level metadata.
+
+- **Overpass API**:  
+  Extracts infrastructure like hospitals, schools, and traffic details (e.g. speed limits, pavement type) around the pothole to contextualize severity and urgency.
 
 ### LLM Summarization with LLaMA via Ollama
 
@@ -73,7 +82,7 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
 
 ---
 
-## 🖥️ User Interface
+## 💻 User Interface
 
 - **Framework:** Streamlit  
   The UI orchestrates the processing steps—image upload, detection, geospatial enrichment, and AI summarization—while business logic is abstracted in the `services/` modules.
@@ -81,7 +90,29 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
 
 ---
 
-## 🧰 Requirements
+## 🧠 Model & Dataset Provenance
+
+### YOLOv8 Base: Road Damage Detection Applications
+
+The YOLOv8 model used in this project was trained using the open-source initiative [Road Damage Detection Applications](https://github.com/oracl4/RoadDamageDetection), designed to detect various types of road surface issues.
+
+- **Model Type:** YOLOv8s
+- **Dataset:** Crowdsensing-based Road Damage Detection Challenge 2022 (CRDDC2022)
+- **Damage Types Detected:**
+  - Longitudinal Crack
+  - Transverse Crack
+  - Alligator Crack
+  - Potholes
+
+### Dataset Processing
+
+- Subset used: Filtered data from **Japan** and **India**
+- Converted to YOLOv8 format
+- Training and evaluation performed on local machine with RTX2060 GPU
+
+---
+
+## 🛠️ Requirements
 
 Install the required dependencies using:
 
@@ -116,7 +147,7 @@ streamlit run src/main.py
 
 ---
 
-## 🏗️ Extending the Project
+## 📈 Extending the Project
 
 - **Service Modules:**  
   Easily extend or replace components by editing the services under `src/services/`. Each module (detection, geo, llm, captioning) encapsulates a specific domain logic.
@@ -132,5 +163,6 @@ streamlit run src/main.py
 ## 📣 Credits
 
 - **Detection:** [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics)
-- **Geospatial APIs:** [Nominatim](https://nominatim.openstreetmap.org/), [Overpass API](https://overpass-api.de/)
-- **LLM Integration:** [Ollama LLaMA3](https://ollama.com/)
+- **Dataset & Base Model:** [Road Damage Detection Applications](https://github.com/oracl4/RoadDamageDetection)
+- **Geospatial APIs:** [OpenStreetMap](https://www.openstreetmap.org/), [Nominatim](https://nominatim.openstreetmap.org/), [Overpass API](https://overpass-api.de/)
+- **LLM Integration:** [Ollama LLaMA3](https://ollama.com)
