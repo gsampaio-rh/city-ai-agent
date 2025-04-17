@@ -2,6 +2,8 @@
 
 City AI Agent is an end‑to‑end municipal infrastructure intelligence platform that detects, analyzes, and summarizes road hazards—specifically potholes—for city maintenance teams. Leveraging state‑of‑the‑art computer vision, geospatial data, and local large language model inference, this tool empowers cities with actionable, context‑rich insights in Brazilian Portuguese.
 
+![Demo of City AI Agent](assets/demo.gif)
+
 ---
 
 ## 🚀 Key Features
