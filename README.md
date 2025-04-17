@@ -50,22 +50,6 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
 - **Function:** Locates potholes and computes severity based on bounding box metrics.
 - **Usage:** The detection service processes uploaded road images and annotates pothole locations.
 
-### Geospatial Intelligence
-
-- **APIs:**  
-  - [Nominatim](https://nominatim.openstreetmap.org/) for forward and reverse geocoding.
-  - [Overpass API](https://overpass-api.de/) for querying nearby amenities and infrastructure.
-- **Purpose:** Enriches image data with precise location details and contextual urban information.
-- **Underlying Source:** All geospatial data is provided via the OpenStreetMap ecosystem.
-
-#### How It's Used
-
-- **Nominatim API**:  
-  Converts addresses into latitude/longitude and vice-versa to tag road damage with relevant administrative and street-level metadata.
-
-- **Overpass API**:  
-  Extracts infrastructure like hospitals, schools, and traffic details (e.g. speed limits, pavement type) around the pothole to contextualize severity and urgency.
-
 ### LLM Summarization with LLaMA via Ollama
 
 - **Models:**
@@ -74,6 +58,64 @@ City AI Agent is an end‑to‑end municipal infrastructure intelligence platfor
 - **How It Works:**  
   Combines geospatial data, visual detection results, and (optionally) image captions (if provided) to generate concise, context‑rich summaries in 100% BR‑Portuguese.
 - **Note:** Captioning is now optional, allowing a more streamlined workflow if desired.
+
+## 🌐 API Integrations Overview
+
+City AI Agent relies on three powerful, open-access APIs that make up the geospatial intelligence layer:
+
+### 1. OpenStreetMap (OSM)
+
+- **What it is:**  
+  A collaborative, open-source map of the world, built by a community of mappers that contribute and maintain data about roads, buildings, infrastructure, and more.
+  
+- **Usage in this project:**  
+  - OSM provides the base data used by both the Nominatim and Overpass APIs.
+  - All geospatial queries and results are ultimately derived from OSM data.
+  - OSM’s structure allows for rich metadata tagging (e.g., surface type, max speed, amenity types) that is leveraged in road analysis.
+
+> 🌐 Website: https://www.openstreetmap.org/
+
+### 2. Nominatim API
+
+- **What it is:**  
+  A geocoding and reverse geocoding service that uses OpenStreetMap data.
+
+- **Endpoints used:**
+  - **Forward geocoding:** Convert textual addresses to latitude/longitude.
+  - **Reverse geocoding:** Convert coordinates into human-readable addresses and context.
+
+- **Example in City AI Agent:**
+  - Identify the exact address or road name where a pothole is located.
+  - Determine neighborhood or administrative boundaries for reporting.
+
+```python
+# Example use (from geo.py):
+lat, lon, display_name = forward_geocode("Av. Paulista, São Paulo, Brazil")
+```
+
+> 📘 API Docs: https://nominatim.org/release-docs/latest/api/Overview/
+
+### 3. Overpass API
+
+- **What it is:**  
+  A query API that allows custom searches against the OpenStreetMap dataset using Overpass QL (query language).
+
+- **Used for:**
+  - Searching for amenities (schools, hospitals, etc.) near detected potholes.
+  - Analyzing infrastructure metadata like road types, surface quality, number of lanes, and speed limits.
+  - Filtering specific tags (e.g., "highway", "amenity", "surface") in a geographic radius.
+
+- **Example in City AI Agent:**
+  - Fetch traffic-related attributes for nearby roads.
+  - Visualize surrounding context for hazard prioritization.
+
+```overpassql
+[out:json];
+way(around:100, -23.561, -46.656)["highway"];
+out body;
+```
+
+> 📓 API Docs: https://overpass-api.de/
 
 ### Optional BLIP Captioning
 
